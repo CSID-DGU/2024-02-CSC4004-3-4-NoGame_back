@@ -1,4 +1,3 @@
-from django.shortcuts import redirect
 from django.conf import settings
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -7,6 +6,7 @@ from .serializers import UserSerializer
 from .models import User
 import requests
 from rest_framework import status
+from django.shortcuts import redirect
 
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
@@ -63,13 +63,13 @@ class KakaoCallbackView(APIView):
 
         serializer = UserSerializer(user)
         return Response(serializer.data)
-    
+
 class KakaoLogoutView(APIView):
     def get(self, request):
         client_id = settings.KAKAO_CONFIG['KAKAO_REST_API_KEY']
         logout_redirect_uri = settings.KAKAO_CONFIG['LOGOUT_REDIRECT_URI']
         kakao_logout_url = f"https://kauth.kakao.com/oauth/logout?client_id={client_id}&logout_redirect_uri={logout_redirect_uri}"
-        return redirect(kakao_logout_url)   
+        return redirect(kakao_logout_url)
 
 class KakaoUnlinkView(APIView):
     def get(self, request):
@@ -101,7 +101,7 @@ class KakaoUnlinkView(APIView):
                 {"error": "Failed to unlink account.", "response": response.json()},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        
+
 class UserProfileView(APIView):
     def get(self, request):
         user_id = request.session.get('user_id')
@@ -165,7 +165,7 @@ def user_detail(request, user_id):
         }, json_dumps_params={'ensure_ascii': False}, status=200)
     except User.DoesNotExist:
         return JsonResponse({"error": "User not found."}, status=404)
-        
+
 @api_view(['GET'])
 def all_users(request):
     """
@@ -185,4 +185,4 @@ def all_users(request):
         }
         for user in users
     ]
-    return JsonResponse(user_list, safe=False, json_dumps_params={'ensure_ascii': False}, status=200)    
+    return JsonResponse(user_list, safe=False, json_dumps_params={'ensure_ascii': False}, status=200)
