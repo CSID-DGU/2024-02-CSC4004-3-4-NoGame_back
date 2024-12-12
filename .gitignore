@@ -170,6 +170,9 @@ __pycache__/
 
 # Django
 media/
+/media
+/media/
+media
 static/
 
 # 환경 변수

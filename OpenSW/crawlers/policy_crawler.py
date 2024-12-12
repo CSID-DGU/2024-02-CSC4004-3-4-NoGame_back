@@ -5,7 +5,11 @@
 # from PolicyApp.models import Policy  # Django 모델 불러오기
 #
 # def fetch_and_save_policies(max_pages=5):  # 데이터 저장 포함
+<<<<<<< HEAD
 #     service = Service(r"C:\Users\김현준\IdeaProjects\chromedriver-win64\chromedriver.exe")
+=======
+#     service = Service(r"C:\Users\werty\Documents\카카오톡 받은 파일\chromedriver-win64\chromedriver.exe")
+>>>>>>> 0bdb23dd2b28dd5fe82a2cbf3879336d04a330c7
 #     driver = webdriver.Chrome(service=service)
 #
 #     base_url = "https://www.youthcenter.go.kr/youngPlcyUnif/youngPlcyUnifList.do?frameYn=Y&pageIndex="
