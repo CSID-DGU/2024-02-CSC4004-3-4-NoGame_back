@@ -5,6 +5,13 @@ from rest_framework.decorators import action
 from .models import PolicyIdea, Evaluation, Like, Scrap, Tag
 from .serializers import ( PolicyIdeaSerializer, EvaluationSerializer, LikeSerializer, ScrapSerializer, TagSerializer)
 
+<<<<<<< HEAD
+
+from django.db.models import Avg
+from django.http import JsonResponse
+
+=======
+>>>>>>> upstream/main
 class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
@@ -97,4 +104,45 @@ class ScrapViewSet(viewsets.ModelViewSet):
     def delete_scrap(self, request, policy_id=None):
         scrap = get_object_or_404(Scrap, policy_id=policy_id, user=request.user)
         scrap.delete()
+<<<<<<< HEAD
         return Response({'detail': '스크랩이 삭제되었습니다.'}, status=status.HTTP_204_NO_CONTENT)
+
+
+def policyidea_detail(request, id):
+    try:
+        # 요청받은 ID에 해당하는 정책 아이디어 조회
+        policy_idea = PolicyIdea.objects.get(pk=id)
+
+        # 연결된 태그 조회
+        tags = [tag.name for tag in policy_idea.tags.all()]
+
+        # 좋아요 및 스크랩 수
+        like_count = Like.objects.filter(policy=policy_idea).count()
+        scrap_count = Scrap.objects.filter(policy=policy_idea).count()
+
+        # 평가 데이터
+        evaluations = Evaluation.objects.filter(policy=policy_idea)
+        average_score = evaluations.aggregate(Avg('score'))['score__avg']
+        total_evaluations = evaluations.count()
+
+        # 이미지 URL 목록
+        images = policy_idea.policyidea_images.all()
+        image_urls = [image.image.url for image in images]
+
+        return JsonResponse({
+            'id': policy_idea.id,
+            'title': policy_idea.title,
+            'content': policy_idea.content,
+            'created_at': policy_idea.created_at,
+            'tags': tags,
+            'like_count': like_count,
+            'scrap_count': scrap_count,
+            'average_score': average_score,
+            'total_evaluations': total_evaluations,
+            'images': image_urls,
+        }, json_dumps_params={'ensure_ascii': False})
+    except PolicyIdea.DoesNotExist:
+        return JsonResponse({'error': 'PolicyIdea not found'}, status=404)
+=======
+        return Response({'detail': '스크랩이 삭제되었습니다.'}, status=status.HTTP_204_NO_CONTENT)
+>>>>>>> upstream/main

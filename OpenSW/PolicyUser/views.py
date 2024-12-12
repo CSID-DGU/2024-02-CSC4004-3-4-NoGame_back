@@ -8,6 +8,12 @@ from .models import User
 import requests
 from rest_framework import status
 
+<<<<<<< HEAD
+from django.http import JsonResponse
+from rest_framework.decorators import api_view
+
+=======
+>>>>>>> upstream/main
 User = get_user_model()
 
 class KakaoLoginView(APIView):
@@ -144,4 +150,46 @@ class UserProfileView(APIView):
         request.session['gender'] = gender
         request.session['residence'] = residence
 
+<<<<<<< HEAD
         return self.get(request)
+
+@api_view(['GET'])
+def user_detail(request, user_id):
+    try:
+        user = User.objects.get(pk=user_id)
+        return JsonResponse({
+            "id": user.id,
+            "username": user.username,
+            "nickname": user.nickname,
+            "profile_image": user.profile_image,
+            "age": user.age,
+            "gender": user.gender,
+            "residence": user.residence,
+            "joined_at": user.joined_at.strftime('%Y-%m-%d %H:%M:%S'),
+        }, json_dumps_params={'ensure_ascii': False}, status=200)
+    except User.DoesNotExist:
+        return JsonResponse({"error": "User not found."}, status=404)
+        
+@api_view(['GET'])
+def all_users(request):
+    """
+    모든 사용자 정보를 반환하는 함수
+    """
+    users = User.objects.all()
+    user_list = [
+        {
+            "id": user.id,
+            "username": user.username,
+            "nickname": user.nickname,
+            "profile_image": user.profile_image,
+            "age": user.age,
+            "gender": user.gender,
+            "residence": user.residence,
+            "joined_at": user.joined_at.strftime('%Y-%m-%d %H:%M:%S'),
+        }
+        for user in users
+    ]
+    return JsonResponse(user_list, safe=False, json_dumps_params={'ensure_ascii': False}, status=200)    
+=======
+        return self.get(request)
+>>>>>>> upstream/main
